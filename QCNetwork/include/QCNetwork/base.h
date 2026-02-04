@@ -1,4 +1,9 @@
 #pragma once
+
+#include <boost/lambda/lambda.hpp>
+#include <iostream>
+#include <iterator>
+#include <algorithm>
  
 enum class MyEnum {
     One,
@@ -6,4 +11,4 @@ enum class MyEnum {
     Three
 };
 
- 
+void MultiplyByThree();
