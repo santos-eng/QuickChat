@@ -1,8 +1,0 @@
-/Users/si/dev/QuickChat/build/CMakeFiles/edit_cache.dir
-/Users/si/dev/QuickChat/build/CMakeFiles/rebuild_cache.dir
-/Users/si/dev/QuickChat/build/QCClient/CMakeFiles/QCClient.dir
-/Users/si/dev/QuickChat/build/QCClient/CMakeFiles/edit_cache.dir
-/Users/si/dev/QuickChat/build/QCClient/CMakeFiles/rebuild_cache.dir
-/Users/si/dev/QuickChat/build/QCServer/CMakeFiles/QCServer.dir
-/Users/si/dev/QuickChat/build/QCServer/CMakeFiles/edit_cache.dir
-/Users/si/dev/QuickChat/build/QCServer/CMakeFiles/rebuild_cache.dir
