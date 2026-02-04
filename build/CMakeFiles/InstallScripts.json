@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/si/dev/QuickChat/build/cmake_install.cmake",
+		"/Users/si/dev/QuickChat/build/QCClient/cmake_install.cmake",
+		"/Users/si/dev/QuickChat/build/QCServer/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
