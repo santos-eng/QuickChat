@@ -15,6 +15,10 @@ namespace QC {
     };
 
     class TCPServer {
+        using onJoinHandler = std::function<void(TCPConnection::tcpShPtr)>;
+        using onLeaveHandler = std::function<void(TCPConnection::tcpShPtr)>;
+        using onClientMsgHandler = std::function<void(std::string)>;
+
         IPV _ipversion;
         int _port;
 
@@ -32,5 +36,9 @@ namespace QC {
         int run();
 
         void broadcast(const std::string& message);
+
+        onJoinHandler onJoin();
+        onLeaveHandler onLeave();
+        onClientMsgHandler onClientMsg();
     };
 }

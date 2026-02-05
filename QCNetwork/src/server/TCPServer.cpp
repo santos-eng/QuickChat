@@ -33,6 +33,11 @@ namespace QC {
                 // Creating a connection
                 auto connection = TCPConnection::create(std::move(*_socket));
 
+                if (onJoin) {
+                    onJoin(connection);
+                }
+
+
                 _connections.insert(connection); 
 
                 if (!error) {
@@ -46,7 +51,9 @@ namespace QC {
 
     void TCPServer::broadcast(const std::string & message)
     {
-
+        for (auto& connection : _connections) {
+            connection->post(message);
+        }
     }
 }
 

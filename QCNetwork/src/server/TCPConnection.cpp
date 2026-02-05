@@ -3,19 +3,49 @@
 
 namespace QC {
     void TCPConnection::asyncRead()
-    {
+    {  
+        asio::async_read_until(_socket, _streamBuf, '\n', [self = shared_from_this()](boost::system::error_code ec, size_t bytesTransferred){
+            self->onRead(ec, bytesTransferred);
+        });
     }
 
     void TCPConnection::onRead(boost::system::error_code ec, size_t bytesTransferred)
     {
+        if (ec) {
+            _socket.close();
+
+            //add error handler
+            return;
+        }
+
+        std::stringstream message;
+        message << _username << ": " << std::istream(&_streamBuf).rdbuf(); // rdbuf consumes the buffer
+
+        std::cout << message.str();
+
+        asyncRead();
     }
 
     void TCPConnection::asyncWrite()
     {
+        asio::async_write(_socket, asio::buffer(_outgoingMsgs.front()), [self = shared_from_this()](boost::system::error_code ec, size_t bytesTransferred){
+            self->onWrite(ec, bytesTransferred);
+        });
     }
 
     void TCPConnection::onWrite(boost::system::error_code ec, size_t bytesTransferred)
     {
+        if (ec) {
+            _socket.close();
+
+            //add error handler
+            return;
+        }
+
+        _outgoingMsgs.pop();
+        if (!_outgoingMsgs.empty()) {
+            asyncWrite();
+        }
     }
 
      TCPConnection::TCPConnection(asio::ip::tcp::socket&& socket) : _socket(std::move(socket))
@@ -35,36 +65,17 @@ namespace QC {
 
     void TCPConnection::start()
     {
-        // Make sure to hold message, even if initial goes out of scope
-        auto strongThis = shared_from_this();
-
-        // Write connection message to socket
-        boost::asio::async_write(_socket, boost::asio::buffer(_message), 
-            [strongThis](const boost::system::error_code& error, size_t bytesTransferred){
-                
-                if (error) {
-                    std::cout << "Failed to send message\n";
-                } else {
-                    std::cout << "Sent " << bytesTransferred << " bytes of data\n";
-                }
-        });
-
-        boost::asio::streambuf buffer;
-        _socket.async_receive(buffer.prepare(512), 
-            [this](const boost::system::error_code& error, size_t bytesTransferred){
-            
-                if (error == boost::asio::error::eof) {
-                // connection cleanly cut
-                std::cout << "Client disconnected properly\n";
-            } else if (error) {
-                // Don't want the server to stop because of a bad client disconnect
-                std::cout << "Client disconnected incorrectly\n";
-            }
-        });
+        asyncRead();
     }
 
-    void TCPConnection::post(const std::string & message)
+    void TCPConnection::post(const std::string& message)
     {
+        bool queueIdle = _outgoingMsgs.empty();
+        _outgoingMsgs.push(message);
+
+        if (queueIdle) {
+            asyncWrite();
+        }
     }
 
     TCPConnection::tcpShPtr TCPConnection::create(asio::ip::tcp::socket&& socket)

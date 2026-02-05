@@ -12,7 +12,7 @@ namespace QC {
         tcp::socket _socket;
         std::string _username;
 
-        std::queue<std::string> outgoingMsgs;
+        std::queue<std::string> _outgoingMsgs;
         asio::streambuf _streamBuf{65536}; // Hold incoming messages
 
         // Waiting for new client msg
