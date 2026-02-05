@@ -2,6 +2,8 @@
 #include <boost/asio.hpp>
 #include "TCPConnection.h"
 #include <vector>
+#include <functional>
+
 
 namespace QC {
     enum class IPV {
@@ -24,5 +26,15 @@ namespace QC {
         TCPServer(IPV ipv, int port);
 
         int run();
+
+        template <typename T>
+        void writeToConnection(int connectionIdx, const T& message);
+
+        template<typename T>
+        using listenCallback = std::function<void(int, const T&)>;
+
+        // Interface to write to a connection
+        template <typename T>
+        void registerListenCallback(listenCallback<T> callback);
     };
 }

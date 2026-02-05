@@ -1,5 +1,5 @@
 #include <iostream>
-#include <QCNetwork/TCPServer.h>
+#include <QCNetwork/server/TCPServer.h>
 
 using boost::asio::ip::tcp;
 

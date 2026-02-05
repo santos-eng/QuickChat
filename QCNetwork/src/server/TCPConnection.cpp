@@ -1,4 +1,4 @@
-#include "QCNetwork/TCPConnection.h"
+#include "QCNetwork/server/TCPConnection.h"
 #include <iostream>
 
 namespace QC {

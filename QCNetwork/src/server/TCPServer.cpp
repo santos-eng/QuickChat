@@ -1,4 +1,4 @@
-#include "QCNetwork/TCPServer.h"
+#include "QCNetwork/server/TCPServer.h"
 #include <iostream>
 
 namespace QC {
@@ -40,6 +40,16 @@ namespace QC {
                 startAccept(); 
             });
     }
+
+    template<typename T>
+    inline void TCPServer::writeToConnection(int connectionIdx, const T & message)
+    {
+    }
+    
+    template<typename T>
+    inline void TCPServer::registerListenCallback(listenCallback<T> callback)
+    {
+}
 }
 
 
