@@ -14,7 +14,13 @@ int main(int argc, char* argv[]) {
         auto endpoints = resolver.resolve("127.0.0.1", "8080");
 
         tcp::socket socket{io_context};
-        boost::asio::connect(socket, endpoints);
+        boost::system::error_code connectError;
+        
+        boost::asio::connect(socket, endpoints, connectError);
+        if (connectError) {
+            std::cerr << "Could not connect to server: " << endpoints.begin()->endpoint().address() 
+                << ", on port: " << endpoints.begin()->endpoint().port() << "\n";
+        }
 
         while (true) {
             //Listening
