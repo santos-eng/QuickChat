@@ -14,7 +14,6 @@ int main(int argc, char* argv[]) {
         auto endpoints = resolver.resolve("127.0.0.1", "8080");
 
         tcp::socket socket{io_context};
-
         boost::asio::connect(socket, endpoints);
 
         while (true) {
