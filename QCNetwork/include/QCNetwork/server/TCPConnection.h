@@ -3,11 +3,14 @@
 #include <memory>
 #include <string>
 #include <queue>
+#include <functional>
 
 namespace QC {
     using boost::asio::ip::tcp;
     namespace asio = boost::asio;
 
+    using msgHandler = std::function<void(std::string)>;
+    using errorHandler = std::function<void()>;
 
     class TCPConnection : public std::enable_shared_from_this<TCPConnection> {
         tcp::socket _socket;
@@ -22,13 +25,15 @@ namespace QC {
         void asyncWrite();
         void onWrite(boost::system::error_code ec, size_t bytesTransferred);
 
+        msgHandler _msgHandler;
+        errorHandler _errorHandler;
         
     public:
         explicit TCPConnection(asio::ip::tcp::socket&& socket);
 
         tcp::socket& getSocket();
 
-        void start();
+        void start(msgHandler&& msgHandler, errorHandler&& errorHandler);
         void post(const std::string& message);
 
         inline const std::string& getUsername() const {

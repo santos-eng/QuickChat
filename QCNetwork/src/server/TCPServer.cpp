@@ -41,7 +41,15 @@ namespace QC {
                 _connections.insert(connection); 
 
                 if (!error) {
-                    connection->start();
+                    connection->start(
+                        [this](const std::string& message){if (onClientMsg) onClientMsg(message);},
+                        [&, weak = std::weak_ptr(connection)]()
+                        {
+                            if (auto shared = weak.lock(); shared && _connections.erase(shared)) { // atomic lock to access via weak ptr
+                                if (onLeave) onLeave(shared);
+                            }
+                        }
+                    );
                 }
 
                 //Start new connection 

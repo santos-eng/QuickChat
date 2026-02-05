@@ -14,15 +14,14 @@ namespace QC {
         if (ec) {
             _socket.close();
 
-            //add error handler
+            _errorHandler();
             return;
         }
 
         std::stringstream message;
         message << _username << ": " << std::istream(&_streamBuf).rdbuf(); // rdbuf consumes the buffer
 
-        std::cout << message.str();
-
+        _msgHandler(message.str());
         asyncRead();
     }
 
@@ -38,7 +37,7 @@ namespace QC {
         if (ec) {
             _socket.close();
 
-            //add error handler
+            _errorHandler();
             return;
         }
 
@@ -63,8 +62,10 @@ namespace QC {
         return _socket;
     }
 
-    void TCPConnection::start()
+    void TCPConnection::start(msgHandler&& msgHandler, errorHandler&& errorHandler)
     {
+        _msgHandler = std::move(msgHandler);
+        _errorHandler = std::move(errorHandler);
         asyncRead();
     }
 
