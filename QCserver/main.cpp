@@ -3,7 +3,7 @@
 
 using boost::asio::ip::tcp;
 
-int main() {
+int main(int argc, char* argv[]) {
     try {
         boost::asio::io_context io_context;
 
@@ -14,6 +14,7 @@ int main() {
             tcp::socket socket(io_context); // closes when out of scop
             acceptor.accept(socket); // blocking until connection
 
+            std::cout << "client connecteed! sending message\n";
             std::string test_msg = "hello client, testing\n";
             boost::system::error_code error;
 
