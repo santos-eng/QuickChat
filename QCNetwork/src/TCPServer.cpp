@@ -1,5 +1,4 @@
 #include "QCNetwork/TCPServer.h"
-#include "QCNetwork/TCPConnection.h"
 #include <iostream>
 
 namespace QC {
@@ -27,6 +26,8 @@ namespace QC {
     {
         // Creating a connection
         auto connection = TCPConnection::create(_ioContext);
+
+        _connections.push_back(connection);
 
         // asycnhronously connect the connecti onl
         _acceptor.async_accept(connection->getSocket(), 

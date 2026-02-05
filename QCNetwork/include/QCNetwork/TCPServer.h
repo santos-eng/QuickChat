@@ -1,5 +1,7 @@
 #pragma once
 #include <boost/asio.hpp>
+#include "TCPConnection.h"
+#include <vector>
 
 namespace QC {
     enum class IPV {
@@ -13,6 +15,8 @@ namespace QC {
 
         boost::asio::io_context _ioContext;
         boost::asio::ip::tcp::acceptor _acceptor;
+
+        std::vector<TCPConnection::tcpShPtr> _connections;
 
         void startAccept();
 
