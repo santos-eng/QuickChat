@@ -3,9 +3,12 @@
 #include "TCPConnection.h"
 #include <vector>
 #include <functional>
-
+#include <optional>
+#include <unordered_set>
 
 namespace QC {
+    namespace asio = boost::asio;
+
     enum class IPV {
         V4,
         V6
@@ -15,10 +18,11 @@ namespace QC {
         IPV _ipversion;
         int _port;
 
-        boost::asio::io_context _ioContext;
-        boost::asio::ip::tcp::acceptor _acceptor;
+        asio::io_context _ioContext;
+        asio::ip::tcp::acceptor _acceptor;
 
-        std::vector<TCPConnection::tcpShPtr> _connections;
+        std::unordered_set<TCPConnection::tcpShPtr> _connections;
+        std::optional<asio::ip::tcp::socket> _socket;
 
         void startAccept();
 
@@ -27,14 +31,6 @@ namespace QC {
 
         int run();
 
-        template <typename T>
-        void writeToConnection(int connectionIdx, const T& message);
-
-        template<typename T>
-        using listenCallback = std::function<void(int, const T&)>;
-
-        // Interface to write to a connection
-        template <typename T>
-        void registerListenCallback(listenCallback<T> callback);
+        void broadcast(const std::string& message);
     };
 }

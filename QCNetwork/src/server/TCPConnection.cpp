@@ -2,9 +2,30 @@
 #include <iostream>
 
 namespace QC {
-     TCPConnection::TCPConnection(boost::asio::io_context& ioContext) : _socket(ioContext)
+    void TCPConnection::asyncRead()
     {
-        
+    }
+
+    void TCPConnection::onRead(boost::system::error_code ec, size_t bytesTransferred)
+    {
+    }
+
+    void TCPConnection::asyncWrite()
+    {
+    }
+
+    void TCPConnection::onWrite(boost::system::error_code ec, size_t bytesTransferred)
+    {
+    }
+
+     TCPConnection::TCPConnection(asio::ip::tcp::socket&& socket) : _socket(std::move(socket))
+    {
+        boost::system::error_code ec;
+        std::stringstream name;
+
+        name << _socket.remote_endpoint();
+        _username = name.str();
+
     }
 
     tcp::socket& TCPConnection::getSocket()
@@ -20,6 +41,7 @@ namespace QC {
         // Write connection message to socket
         boost::asio::async_write(_socket, boost::asio::buffer(_message), 
             [strongThis](const boost::system::error_code& error, size_t bytesTransferred){
+                
                 if (error) {
                     std::cout << "Failed to send message\n";
                 } else {
@@ -30,7 +52,8 @@ namespace QC {
         boost::asio::streambuf buffer;
         _socket.async_receive(buffer.prepare(512), 
             [this](const boost::system::error_code& error, size_t bytesTransferred){
-            if (error == boost::asio::error::eof) {
+            
+                if (error == boost::asio::error::eof) {
                 // connection cleanly cut
                 std::cout << "Client disconnected properly\n";
             } else if (error) {
@@ -40,9 +63,13 @@ namespace QC {
         });
     }
 
-    TCPConnection::tcpShPtr TCPConnection::create(boost::asio::io_context& ioContext)
+    void TCPConnection::post(const std::string & message)
     {
-        return std::make_shared<TCPConnection>(ioContext);
+    }
+
+    TCPConnection::tcpShPtr TCPConnection::create(asio::ip::tcp::socket&& socket)
+    {
+        return std::make_shared<TCPConnection>(std::move(socket));
     }
 }
 

@@ -22,34 +22,33 @@ namespace QC {
         return 0;
     }
 
+    
     void TCPServer::startAccept()
     {
-        // Creating a connection
-        auto connection = TCPConnection::create(_ioContext);
+        // Starting to accept (waiting for connection) create waiting socket
+        _socket.emplace(_ioContext); 
 
-        _connections.push_back(connection);
+        _acceptor.async_accept(*_socket, [this](const boost::system::error_code& error){
 
-        // asycnhronously connect the connecti onl
-        _acceptor.async_accept(connection->getSocket(), 
-            [connection, this](const boost::system::error_code& error){
+                // Creating a connection
+                auto connection = TCPConnection::create(std::move(*_socket));
+
+                _connections.insert(connection); 
+
                 if (!error) {
                     connection->start();
                 }
 
                 //Start new connection 
                 startAccept(); 
-            });
+        });
     }
 
-    template<typename T>
-    inline void TCPServer::writeToConnection(int connectionIdx, const T & message)
+    void TCPServer::broadcast(const std::string & message)
     {
+
     }
-    
-    template<typename T>
-    inline void TCPServer::registerListenCallback(listenCallback<T> callback)
-    {
 }
-}
+
 
 
