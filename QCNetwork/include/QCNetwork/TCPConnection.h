@@ -6,20 +6,21 @@
 namespace QC {
     using boost::asio::ip::tcp;
 
-    class TCPConnection {
-        tcp::socket _socket;
-        std::string _message{"hello client, testing\n"};
+class TCPConnection : public std::enable_shared_from_this<TCPConnection> {
+    tcp::socket _socket;
+    std::string _message{"hello client, testing\n"};
 
-        explicit TCPConnection(boost::asio::io_context& ioContext);
+    
 
-        
-    public:
-        tcp::socket& getSocket();
+    
+public:
+    explicit TCPConnection(boost::asio::io_context& ioContext);
 
-        void start();
+    tcp::socket& getSocket();
 
-        using tcpShPtr = std::shared_ptr<TCPConnection>;
+    void start();
 
-        static tcpShPtr create(boost::asio::io_context& ioContext);
-    };
+    using tcpShPtr = std::shared_ptr<TCPConnection>;
+    static tcpShPtr create(boost::asio::io_context& ioContext);
+};
 }

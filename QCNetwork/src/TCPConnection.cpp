@@ -14,9 +14,12 @@ namespace QC {
 
     void TCPConnection::start()
     {
+        // Make sure to hold message, even if initial goes out of scope
+        auto strongThis = shared_from_this();
+
         // Write connection message to socket
-        boost::asio::async_write(socket, boost::asio::buffer(_message), 
-            [this](const boost::system::error_code& error, size_t bytesTransferred){
+        boost::asio::async_write(_socket, boost::asio::buffer(_message), 
+            [strongThis](const boost::system::error_code& error, size_t bytesTransferred){
                 if (error) {
                     std::cout << "Failed to send message\n";
                 } else {
@@ -27,7 +30,7 @@ namespace QC {
 
     TCPConnection::tcpShPtr TCPConnection::create(boost::asio::io_context& ioContext)
     {
-        return tcpShPtr(new TCPConnection(ioContext));
+        return std::make_shared<TCPConnection>(ioContext);
     }
 }
 

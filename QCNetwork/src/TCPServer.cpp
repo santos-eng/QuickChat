@@ -26,7 +26,7 @@ namespace QC {
     void TCPServer::startAccept()
     {
         // Creating a connection
-        auto *connection = TCPConnection::create(_ioContext);
+        auto connection = TCPConnection::create(_ioContext);
 
         // asycnhronously connect the connecti onl
         _acceptor.async_accept(connection->getSocket(), 
