@@ -31,14 +31,16 @@ namespace QC {
         void startAccept();
 
     public:
+        onJoinHandler onJoin;
+        onLeaveHandler onLeave;
+        onClientMsgHandler onClientMsg;
+
         TCPServer(IPV ipv, int port);
 
         int run();
 
         void broadcast(const std::string& message);
 
-        onJoinHandler onJoin();
-        onLeaveHandler onLeave();
-        onClientMsgHandler onClientMsg();
+        
     };
 }
