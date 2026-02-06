@@ -13,8 +13,8 @@ namespace QC {
     int TCPServer::run()
     {
         try {
-            startAccept();
-            _ioContext.run();
+            startAccept(); // non blocking 
+            _ioContext.run(); // sleep waiting here
         } catch (std::exception& e) {
             std::cerr << e.what() << std::endl;
             return -1;

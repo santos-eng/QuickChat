@@ -1,48 +1,15 @@
-#include <boost/asio.hpp>
-#include <array>
+#include <QCNetwork/client/TCPClient.h>
 #include <iostream>
 
-using boost::asio::ip::tcp;
-
+using namespace QC;
 int main(int argc, char* argv[]) {
-    try {
-        boost::asio::io_context io_context;
+    TCPClient client{"localhost", 8080};
 
-        tcp::resolver resolver{io_context}; // Convert domain to IP addr
+    client.onMessage = [](const std::string& message) {
+        std::cout << message;
+    };
 
-        // Endpoint is a combo of IP and port #, think of as hotel street # and room # in the hotel 
-        auto endpoints = resolver.resolve("127.0.0.1", "8080");
-
-        tcp::socket socket{io_context};
-        boost::system::error_code connectError;
-        
-        boost::asio::connect(socket, endpoints, connectError);
-        if (connectError) {
-            std::cerr << "Could not connect to server: " << endpoints.begin()->endpoint().address() 
-                << ", on port: " << endpoints.begin()->endpoint().port() << "\n";
-        }
-
-        while (true) {
-            //Listening
-            std::array<char, 128> buf;
-
-            boost::system::error_code error;
-
-            size_t len = socket.read_some(boost::asio::buffer(buf), error); // Bytes successfull read;
-            
-            if (error == boost::asio::error::eof) {
-                // connection cleanly cut
-                break;
-            } else if (error) {
-                throw boost::system::system_error(error);
-            }
-
-            std::cout.write(buf.data(), len); // (mem address, length of msg)
-        }
-         
-    } catch (std::exception& e) {
-        std::cerr << e.what() << std::endl;
-    }
+    client.run();
 
     return 0;
 }
