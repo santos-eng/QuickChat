@@ -13,11 +13,9 @@ namespace QC {
             if (!ec) {
                 asyncRead();
             }
-
-            _ioContext.run(); // Will wait indefintely, waiting for message
         });
-
-        _ioContext.run();
+        
+        _ioContext.run(); // Will wait indefintely, waiting for message
     }
 
     void TCPClient::stop()
