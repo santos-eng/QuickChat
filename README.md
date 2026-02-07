@@ -68,10 +68,14 @@ Sudoku has been built with:
 
 
 ## Usage
-
-### Starting the Server
+After starting the server, it will begin accepting connections waiting for clients to join.
 <p align="center">
-  <img src="readme_media/keyUI.png" width="600">
+  <img src="readme_media/startServer.png" width="400">
+</p>
+
+Once a client joins (top right), then the server will indicated the joined client (top left). In this example, it is listed on the same localhost IP, however, the PID differentiates multiple clients on the same network.
+<p align="center">
+  <img src="readme_media/oneJoin.png" width="600">
 </p>
 
 
