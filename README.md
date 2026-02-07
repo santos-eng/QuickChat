@@ -78,8 +78,22 @@ Once a client joins (top right), then the server will indicated the joined clien
   <img src="readme_media/oneJoin.png" width="800">
 </p>
 
+If the client wants to leave, they either type `\q` or can kill the process. Notice the server message that its client has left the chat.
+<p align="center">
+  <img src="readme_media/oneLeave.png" width="800">
+</p>
 
+Now lets join all three clients (top right, bottom left, bottom right) to the server (top left).
+<p align="center">
+  <img src="readme_media/allJoin.png" width="800">
+</p>
 
+Now lets message each other. In the following image, the top right client (PID 52492) will broadcast out a message to all clients.
+<p align="center">
+  <img src="readme_media/messageOne.png" width="800">
+</p>
+
+Now you can continue to chat until leaving or the server shuts down!
 
 [cpp]: https://img.shields.io/badge/C++-%2300599C.svg?logo=c%2B%2B&logoColor=white
 [cpp-url]: https://cplusplus.com/
