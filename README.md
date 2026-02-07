@@ -1,6 +1,6 @@
 # QuickChat
 <p align="center">
-  <img src="readme_media/introShot.png" width="600">
+  <img src="readme_media/introShot.png" width="800">
 </p>
 
 ## About QuickChat
@@ -75,7 +75,7 @@ After starting the server, it will begin accepting connections waiting for clien
 
 Once a client joins (top right), then the server will indicated the joined client (top left). In this example, it is listed on the same localhost IP, however, the PID differentiates multiple clients on the same network.
 <p align="center">
-  <img src="readme_media/oneJoin.png" width="600">
+  <img src="readme_media/oneJoin.png" width="800">
 </p>
 
 
